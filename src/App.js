@@ -1,27 +1,50 @@
-import {useState,useEffect} from "react"
+import {useReducer} from "react"
 import Decision from "./Decision"
+const initialState = {
+  fcfEachyear: [],
+  tenthYearFCF: 0,
+  futureCashFlow: null
+};
 
+const reducer = (state, {type,value}) => {
+  switch(type)
+  {
+    case "reset":
+      return initialState;
+    case "updateFcfBreakDown":
+        return  {...state, fcfEachyear:value };
+    case "tenthYearFCF":
+      return  {...state, tenthYearFCF:value };
+    case "updateFutureCashFlow":
+      return  {...state, futureCashFlow:value };
+    case "updateMarketCap":
+      return  {...state, marketCapCal:value };
+    default:
+        return state;  
+  }
+};
 function App() {
-  const [fcfEachyear, setfcfEachyear] = useState([])
-  const [tenthYearFCF,settenthYearFCF]=useState()
-  const [futureCashFlow,setfutureCashFlow]=useState(null)
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { fcfEachyear, tenthYearFCF, futureCashFlow,marketCapCal} = state;
   function updateSelectedValue(elem)
   {
       document.getElementById((elem.id)+"Selected").innerHTML=elem.value;
   }
+    
   function calculateIntrinsic()
   {
+    dispatch({ type: "reset" });
     let firstFiveGR=parseInt(document.getElementById("firstFiveYearGR").value)/100;
     let nextFiveYearGR=parseInt(document.getElementById("nextFiveYearGR").value)/100;
     let terminalValue=document.getElementById("terminalValue").value;
-   
+    let discountRate=parseInt(document.getElementById("discountValue").value)/100;
     let fcf=document.getElementById("freeCashflow").value;
+    let excessCapital=parseFloat(document.getElementById("excessCapital").value);
     
-    CalculateFreeCashFlow(fcf,firstFiveGR,nextFiveYearGR,terminalValue)
+   CalculateFreeCashFlow(fcf,firstFiveGR,nextFiveYearGR,terminalValue).then(calculatePresentValue(discountRate)).then(calculateIntrinsicValue(excessCapital))
   }
-  const CalculateFreeCashFlow=async (fcf,firstFiveGR,nextFiveYearGR,terminalValue)=>
+   const CalculateFreeCashFlow=async (fcf,firstFiveGR,nextFiveYearGR,terminalValue)=>
   {
-  //  // let firstFiveFCF=parseInt(fcf);
     let nextCashFlow=parseFloat(fcf);
     let fcfYearBreakDown=[nextCashFlow];
 
@@ -38,41 +61,47 @@ function App() {
       console.log(Math.round(nextCashFlow)+ "   " + nextCashFlow)
       fcfYearBreakDown.push(nextCashFlow)
     }
-   
-      setfcfEachyear(fcfYearBreakDown);
-   
-    
-    settenthYearFCF(nextCashFlow*terminalValue);
+    let TenthYearFCF=nextCashFlow*terminalValue;
+   dispatch(
+     {
+       type:"updateFcfBreakDown",
+       value:fcfYearBreakDown
+     })
+     dispatch(
+      {
+        type:"tenthYearFCF",
+        value:TenthYearFCF
+      })
    return true;
   }
-  useEffect(() => {
-    let discountRate=parseInt(document.getElementById("discountValue").value)/100;
-   
-    if(fcfEachyear.length>0)
-    calculatePresentValue(discountRate)
-}, [fcfEachyear])
-useEffect(()=>{
-  let excessCapital=parseFloat(document.getElementById("excessCapital").value);
-  if(futureCashFlow !== null)
-    calculateIntrinsicValue(excessCapital).then(console.log("hai"));
-},[futureCashFlow])
   const calculatePresentValue=async (discountRate)=>
   {
       let presentvalue=0
        fcfEachyear.forEach((value,index) => {
-        console.log(value+"/(1+"+discountRate+"))"+(index+1))
         presentvalue+=(value/Math.pow((1+discountRate),(index+1)));
-        console.log((value/Math.pow((1+discountRate),(index+1))))
       });
       let valueOfCompany=(tenthYearFCF/Math.pow((1+discountRate),10));
-      setfutureCashFlow(valueOfCompany+presentvalue) 
+      let futureCashFlowValue=valueOfCompany+presentvalue;
+
+      dispatch(
+        {
+          type:"updateFutureCashFlow",
+          value:futureCashFlowValue
+        })
       return true;
   }
   const calculateIntrinsicValue= async (excessCapital)=>
   {
-    console.log(excessCapital+futureCashFlow)
+    let calculatedMarketCap=excessCapital+futureCashFlow
+    console.log("calculated Market Cap")
+    console.log(calculatedMarketCap)
+    dispatch(
+      {
+        type:"updateMarketCap",
+        value:calculatedMarketCap
+      })
     return true;
-  }
+  } 
   return (
     <div className="App">
       <div>
