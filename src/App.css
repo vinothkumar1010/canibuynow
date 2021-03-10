@@ -1,38 +1,149 @@
-.App {
-  text-align: center;
+/* ==== GRID SYSTEM ==== */
+.resp-row {
+	position: relative;
+	width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.resp-col-1, .resp-col-2, .resp-col-3, .resp-col-4, .resp-col-5, .resp-col-6, .resp-col-7, .resp-col-8, .resp-col-9,
+	.resp-col-10, .resp-col-11, .resp-col-12 {
+	width: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.resp-col-1-sm {
+	width: 6.90%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.resp-col-2-sm {
+	width: 15.36%;
 }
 
-.App-link {
-  color: #61dafb;
+.resp-col-3-sm {
+	width: 23.82%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.resp-col-4-sm {
+	width: 32.29%;
+}
+
+.resp-col-5-sm {
+	width: 40.75%;
+}
+
+.resp-col-6-sm {
+	width: 49.21%;
+}
+
+.resp-col-7-sm {
+	width: 57.68%;
+}
+
+.resp-col-8-sm {
+	width: 66.14%;
+}
+
+.resp-col-9-sm {
+	width: 74.60%;
+}
+
+.resp-col-10-sm {
+	width: 83.07%;
+}
+
+.resp-col-11-sm {
+	width: 91.53%;
+}
+
+.resp-col-12-sm {
+	width: 100%;
+}
+
+.resp-row::after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+@media only screen and (min-width: 960px) and  (orientation: landscape) {
+	
+	
+	.resp-col-1 {
+		width: 6.90%;
+	}
+	.resp-col-2 {
+		width: 15.36%;
+	}
+	.resp-col-3 {
+		width: 23.82%;
+	}
+	.resp-col-4 {
+		width: 32.29%;
+	}
+	.resp-col-5 {
+		width: 40.75%;
+	}
+	.resp-col-6 {
+		width: 49.21%;
+	}
+	.resp-col-7 {
+		width: 57.68%;
+	}
+	.resp-col-8 {
+		width: 66.14%;
+	}
+	.resp-col-9 {
+		width: 74.60%;
+	}
+	.resp-col-10 {
+		width: 83.07%;
+	}
+	.resp-col-11 {
+		width: 91.53%;
+	}
+	.resp-col-12 {
+		width: 100%;
+	}
+	
+	
+}
+
+
+/* POSITIONING */
+.textleft {
+	text-align: left;
+}
+
+.textright {
+	text-align: right;
+}
+
+.textcenter{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.textjustify {
+	text-align: justify;
+}
+
+.inlineblock {
+	display: inline-block;
+}
+
+.blockdisplay {
+	display: block;
+}
+
+.inlinedisplay {
+	display: inline;
+}
+
+.displaynone{
+	display:none;
+}
+
+.displayinlineflex{
+	display:inline-flex;
 }
