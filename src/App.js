@@ -1,16 +1,17 @@
-import {useReducer} from "react"
+import {useReducer,useEffect} from "react"
 import Decision from "./Decision"
 const initialState = {
   fcfEachyear: [],
   tenthYearFCF: 0,
-  futureCashFlow: null
+  futureCashFlow: null,
+  marketCapCal:0
 };
 
 const reducer = (state, {type,value}) => {
   switch(type)
   {
     case "reset":
-      return initialState;
+      return {...state,...initialState};
     case "updateFcfBreakDown":
         return  {...state, fcfEachyear:value };
     case "tenthYearFCF":
@@ -34,14 +35,15 @@ function App() {
   function calculateIntrinsic()
   {
     dispatch({ type: "reset" });
+    
     let firstFiveGR=parseInt(document.getElementById("firstFiveYearGR").value)/100;
     let nextFiveYearGR=parseInt(document.getElementById("nextFiveYearGR").value)/100;
     let terminalValue=document.getElementById("terminalValue").value;
-    let discountRate=parseInt(document.getElementById("discountValue").value)/100;
+  //  let discountRate=parseInt(document.getElementById("discountValue").value)/100;
     let fcf=document.getElementById("freeCashflow").value;
-    let excessCapital=parseFloat(document.getElementById("excessCapital").value);
+   // let excessCapital=parseFloat(document.getElementById("excessCapital").value);
     
-   CalculateFreeCashFlow(fcf,firstFiveGR,nextFiveYearGR,terminalValue).then(calculatePresentValue(discountRate)).then(calculateIntrinsicValue(excessCapital))
+   CalculateFreeCashFlow(fcf,firstFiveGR,nextFiveYearGR,terminalValue)
   }
    const CalculateFreeCashFlow=async (fcf,firstFiveGR,nextFiveYearGR,terminalValue)=>
   {
@@ -62,6 +64,7 @@ function App() {
       fcfYearBreakDown.push(nextCashFlow)
     }
     let TenthYearFCF=nextCashFlow*terminalValue;
+    console.log(TenthYearFCF)
    dispatch(
      {
        type:"updateFcfBreakDown",
@@ -72,10 +75,23 @@ function App() {
         type:"tenthYearFCF",
         value:TenthYearFCF
       })
+     
    return true;
   }
+  useEffect(() => {
+    let discountRate=parseInt(document.getElementById("discountValue").value)/100;
+
+    if(fcfEachyear.length>0)
+    calculatePresentValue(discountRate)
+}, [fcfEachyear])
+useEffect(()=>{
+  let excessCapital=parseFloat(document.getElementById("excessCapital").value);
+  if(futureCashFlow !== null)
+    calculateIntrinsicValue(excessCapital).then(console.log("hai"));
+},[futureCashFlow])
   const calculatePresentValue=async (discountRate)=>
   {
+    console.log(fcfEachyear)
       let presentvalue=0
        fcfEachyear.forEach((value,index) => {
         presentvalue+=(value/Math.pow((1+discountRate),(index+1)));
@@ -119,7 +135,7 @@ function App() {
       <div>
         <label htmlFor="discountValue">Discount Rate<span id="discountValueSelected"></span></label>
         <input type="range" id="discountValue" name="discountValue" onChange={event => updateSelectedValue(event.target)} 
-          min="0" max="100"/>
+          min="0" max="100" value="10"/>
       </div>
       <div>
         <label htmlFor="freeCashFlow">Free Cash flow</label>
@@ -131,6 +147,9 @@ function App() {
       </div>
       <div>
         <button id="canIBuyNow" name="canIBuyNow" onClick={calculateIntrinsic}>Can I buy now?</button>
+      </div>
+      <div>
+        Calculated total Market cap is {marketCapCal}
       </div>
     </div>
   );
