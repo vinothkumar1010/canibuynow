@@ -1,0 +1,77 @@
+.componentContainer
+{
+    width:80%;
+    margin:0 auto;
+    border:1px solid #fefefe;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    padding:20px;
+    background-color: #fff;
+    position: relative;
+}
+input[type="text"],input[type="number"]
+{
+    border:1px solid #ccc;
+    height:30px;
+    border-radius: 3px;
+    display: block;
+    margin:8px 0 8px 0;
+    width:100%;
+}
+button
+{
+	background-color: #47cf73;
+	border:1px solid #47cf73;
+	padding:10px;
+	color:#fff;
+	border-radius: 5px;
+	width:100%;
+	text-align: center;
+	font-size: 1em;
+	margin:5px 0;
+}
+label
+{
+    display: block;
+}
+.tooltipIcon
+{
+    width:15px;
+    height:15px;
+    fill: aqua;
+}
+table
+{
+    border-collapse: collapse;
+    border:1px solid #ccc;
+}
+table > thead
+{
+    background-color:#CECECE;
+}
+tr > td,tr > th
+{
+    padding:5px;
+    width:100px;
+    text-align: center;
+    border:1px solid #ccc;
+}
+
+@media only screen and (min-width: 768px) {
+    .container
+    {
+        position: relative;
+    }
+    .valuesForCalculate
+    {
+        max-width: 760px;
+        
+    }
+    input[type="text"],input[type="number"]
+    {
+            width: 300px;   
+    }
+    button
+    {
+        width: 300px;
+    }
+}
