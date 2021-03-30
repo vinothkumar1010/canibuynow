@@ -176,6 +176,7 @@ const returnToValues=()=>
       
    {(!showDecision || (showDecision === undefined))?
     (<div className="valuesForCalculate componentContainer">
+      <p>Values for each item we need to get it from Yahoo finance except free cash flow. So before begin to enter values please go to Yahoo finance and enter your stock name or ticker.</p>
       <div>
         <label htmlFor="firstFiveYearGR">Growth Rate (yrs 1 -5) {<Tooltip/>}</label>
         <input type="text" id="firstFiveYearGR" name="firstFiveYearGR" />
